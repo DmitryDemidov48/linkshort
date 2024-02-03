@@ -1,14 +1,13 @@
 {
   "name": "linkshort",
   "version": "0.1.0",
-  "homepage": "https://dmitrydemidov48.github.io/linkshort/",
+  "homepage": "https://dmitrydemidov48.github.io/linkshort",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.7",
     "dotenv": "^16.4.1",
-    "gh-pages": "^6.1.1",
     "formik": "^2.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -48,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
   }
 }

@@ -1,13 +1,14 @@
 {
   "name": "linkshort",
   "version": "0.1.0",
-  "private": true,
+  "homepage": "https://dmitrydemidov48.github.io/linkshort/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.7",
     "dotenv": "^16.4.1",
+    "gh-pages": "^6.1.1",
     "formik": "^2.4.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -23,9 +24,12 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "buildAndDeploy": "npm run build && npm run deploy"
   },
   "eslintConfig": {
     "extends": [

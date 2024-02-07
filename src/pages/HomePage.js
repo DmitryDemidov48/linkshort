@@ -1,66 +1,41 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
 import Header from "../components/Header";
-import Table from "../components/Table";
 import ShortenLinkForm from "../components/ShortenLinkForm";
-import axios from 'axios'; // Импортируем Axios
+import styled from "styled-components";
 
-// Стилизованный компонент для контейнера главной страницы
 const HomeContainer = styled.div`
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #f8f9fa;
+  background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: center; /* Выравнивание текста по центру */
 `;
 
-// Стилизованный компонент для заголовка главной страницы
 const HomeHeading = styled.h2`
   font-size: 28px;
   margin-bottom: 20px;
-  color: #007bff;
-  text-align: center;
+  color: #111111; /* Белый цвет текста */
+`;
+
+const HomeParagraph = styled.p`
+  color: #171616; /* Серый цвет текста */
+  font-size: 16px;
+  line-height: 1.5;
 `;
 
 const HomePage = () => {
-    const [originalLink, setOriginalLink] = useState('');
-    const [tableData, setTableData] = useState([]);
-
-    const handleLinkChange = (e) => {
-        setOriginalLink(e.target.value);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            // Отправляем запрос на сервер для создания короткой ссылки
-            const response = await axios.post('/api/shorten', { originalLink });
-            // Обновляем данные таблицы
-            setTableData(response.data);
-            // Сбрасываем значение поля для ввода длинной ссылки
-            setOriginalLink('');
-            console.log("Создание короткой ссылки для:", originalLink);
-        } catch (error) {
-            console.error("Ошибка при создании короткой ссылки:", error);
-        }
-    };
-
     return (
         <>
             <Header/>
             <HomeContainer>
                 <HomeHeading>Добро пожаловать на наш сервис сокращения ссылок!</HomeHeading>
-                <p>Здесь вы можете создать короткую ссылку для любой длинной ссылки.</p>
-                <ShortenLinkForm
-                    originalLink={originalLink}
-                    handleLinkChange={handleLinkChange}
-                    handleSubmit={handleSubmit}
-                />
-                <Table data={tableData} />
+                <HomeParagraph>Здесь вы можете создать короткую ссылку для любой длинной ссылки.</HomeParagraph>
+                <ShortenLinkForm />
             </HomeContainer>
         </>
     );
 };
+
 
 export default HomePage;

@@ -1,43 +1,53 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import Table from "./Table";
 
-// Стилизованный компонент для формы создания короткой ссылки
 const FormContainer = styled.form`
   display: flex;
-  justify-content: center;
+  flex-direction: row;
   align-items: center;
   margin-bottom: 30px;
 `;
 
-// Стилизованный компонент для поля ввода ссылки
-const LinkInput = styled.input`
-  flex: 1;
+const Input = styled.input`
+  width: 100%;
   padding: 12px;
-  border: 1px solid #ced4da;
+  margin-bottom: ${({ marginBottom }) => marginBottom || 0}px;
+  border: 1px solid #383838; /* Темно-серый цвет рамки */
   border-radius: 6px;
   font-size: 18px;
-  margin-right: 10px;
   outline: none;
 `;
-
-// Стилизованный компонент для кнопки создания короткой ссылки
-const ShortenButton = styled.button`
+const Button = styled.button`
+  width: 30%;
   padding: 12px 20px;
-  background-color: #007bff;
+  margin-top: 5px; /* Отступ сверху 5px */
+  margin-left: 5px; /* Отступ слева 5px */
+  background-color: #000; /* Черный цвет фона */
   color: #fff;
   border: none;
   border-radius: 6px;
-  font-size: 18px;
+  font-size: 14px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #333; /* Темно-серый цвет фона при наведении */
   }
 `;
 
-const ShortenLinkForm = ({ onShorten }) => {
+
+const ErrorMessage = styled.p`
+  color: red;
+`;
+
+const ShortenLinkForm = () => {
     const [originalLink, setOriginalLink] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [shortenedLink, setShortenedLink] = useState('');
+    const [error, setError] = useState('');
+    const [showTable, setShowTable] = useState(false);
 
     const handleLinkChange = (e) => {
         setOriginalLink(e.target.value);
@@ -45,37 +55,51 @@ const ShortenLinkForm = ({ onShorten }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setError('');
+
         try {
-            // Отправляем запрос к API для создания короткой ссылки
-            const response = await fetch('/api/shorten-link', {
-                method: 'POST',
+            const accessToken = '053083799f42e9532566bd687994bdf396800136';
+            const longUrl = originalLink;
+
+            const response = await axios.post('https://api-ssl.bitly.com/v4/shorten', {
+                long_url: longUrl
+            }, {
                 headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ originalLink }),
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
+                }
             });
-            if (response.ok) {
-                const data = await response.json();
-                onShorten(data.shortLink);
-                console.log('Создана короткая ссылка:', data.shortLink);
+
+            if (response.data.link) {
+                setShortenedLink(response.data.link);
+                setShowTable(true);
+                setOriginalLink('');
             } else {
-                console.error('Ошибка при создании короткой ссылки');
+                setError('Не удалось создать короткую ссылку');
             }
         } catch (error) {
-            console.error('Ошибка при отправке запроса:', error.message);
+            setError('Ошибка при создании короткой ссылки');
+            console.error('Error creating shortened link:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <FormContainer onSubmit={handleSubmit}>
-            <LinkInput
-                type="text"
-                placeholder="Введите длинную ссылку"
-                value={originalLink}
-                onChange={handleLinkChange}
-            />
-            <ShortenButton type="submit">Создать короткую ссылку</ShortenButton>
-        </FormContainer>
+        <>
+            <FormContainer onSubmit={handleSubmit}>
+                <Input
+                    type="text"
+                    placeholder="Введите длинную ссылку"
+                    value={originalLink}
+                    onChange={handleLinkChange}
+                />
+                <Button type="submit" disabled={loading}>Создать короткую ссылку</Button>
+                {error && <ErrorMessage>{error}</ErrorMessage>}
+            </FormContainer>
+            {showTable && <Table data={[{ originalLink, shortLink: shortenedLink }]}/>}
+        </>
     );
 };
 

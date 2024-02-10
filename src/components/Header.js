@@ -33,13 +33,16 @@ const ButtonLink = styled(Link)`
 
 const Header = () => {
     return (
+        <>
         <HeaderContainer>
             <SiteName>Shorten Link Service</SiteName>
             <div>
+                <ButtonLink to="/linkshort">Home</ButtonLink>
                 <ButtonLink to="/login">Login</ButtonLink>
                 <ButtonLink to="/register">Register</ButtonLink>
             </div>
         </HeaderContainer>
+        </>
     );
 };
 

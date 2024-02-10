@@ -27,7 +27,6 @@ const HomeParagraph = styled.p`
 const HomePage = () => {
     return (
         <>
-            <Header/>
             <HomeContainer>
                 <HomeHeading>Добро пожаловать на наш сервис сокращения ссылок!</HomeHeading>
                 <HomeParagraph>Здесь вы можете создать короткую ссылку для любой длинной ссылки.</HomeParagraph>

@@ -88,6 +88,7 @@ const ShortenLinkForm = () => {
 
     return (
         <>
+
             <FormContainer onSubmit={handleSubmit}>
                 <Input
                     type="text"
@@ -96,8 +97,9 @@ const ShortenLinkForm = () => {
                     onChange={handleLinkChange}
                 />
                 <Button type="submit" disabled={loading}>Создать короткую ссылку</Button>
-                {error && <ErrorMessage>{error}</ErrorMessage>}
+
             </FormContainer>
+                {error && <ErrorMessage>{error}</ErrorMessage>}
             {showTable && <Table data={[{ originalLink, shortLink: shortenedLink }]}/>}
         </>
     );
